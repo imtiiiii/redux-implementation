@@ -17,6 +17,11 @@ import { selectProfile } from "../app/store/slices/profile";
 const FeedMiddle = () => {
   const data = useSelector(selectProfile);
   console.log("data example initial", data);
+
+  const likePressed = () => { 
+    console.log("like called");
+  }
+
   function destroyAll() {
     Modal.destroyAll();
   }
@@ -418,43 +423,7 @@ const FeedMiddle = () => {
                         </div>
                       </div>
                       <div className="_feed_inner_timeline_post_box_dropdown">
-                        <div className="_feed_timeline_post_dropdown">
-                          <Dropdown
-                            trigger={["click"]}
-                            overlay={menu1}
-                            placement="bottomLeft"
-                            arrow
-                          >
-                            <Button className="_feed_timeline_post_dropdown_link">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="4"
-                                height="17"
-                                fill="none"
-                                viewBox="0 0 4 17"
-                              >
-                                <circle
-                                  cx="2"
-                                  cy="2"
-                                  r="2"
-                                  fill="#C4C4C4"
-                                ></circle>
-                                <circle
-                                  cx="2"
-                                  cy="8"
-                                  r="2"
-                                  fill="#C4C4C4"
-                                ></circle>
-                                <circle
-                                  cx="2"
-                                  cy="15"
-                                  r="2"
-                                  fill="#C4C4C4"
-                                ></circle>
-                              </svg>
-                            </Button>
-                          </Dropdown>
-                        </div>
+                        
                       </div>
                     </div>
                     <h4 className="_feed_inner_timeline_post_title">
@@ -521,8 +490,8 @@ const FeedMiddle = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <p className="_feed_inner_timeline_reaction_para">
-                                  <span>122</span> Like
+                                <p onClick={likePressed} className="_feed_inner_timeline_reaction_para">
+                                  <span>{ data.name.like_count}</span> Like
                                 </p>
                               </div>
                             </span>
@@ -583,7 +552,7 @@ const FeedMiddle = () => {
                                   />
                                 </svg>
                                 <p className="_feed_inner_timeline_reaction_para">
-                                  <span>12</span> Comment
+                                  <span>0</span> Comment
                                 </p>
                               </div>
                             </span>
@@ -607,7 +576,7 @@ const FeedMiddle = () => {
                                   />
                                 </svg>
                                 <p className="_feed_inner_timeline_reaction_para">
-                                  <span>12</span> Share
+                                  <span>0</span> Share
                                 </p>
                               </div>
                             </span>
@@ -630,7 +599,7 @@ const FeedMiddle = () => {
                                   />
                                 </svg>
                                 <p className="_feed_inner_timeline_reaction_para">
-                                  <span>12</span> Save
+                                  <span>0</span> Save
                                 </p>
                               </div>
                             </span>
@@ -654,7 +623,7 @@ const FeedMiddle = () => {
                               <TextArea
                                 className="_comment_textarea"
                                 rows={2}
-                                placeholder="Write Someting..."
+                                placeholder="comment"
                                 onChange={onChange2}
                                 autoSize={{ minRows: 1, maxRows: 10 }}
                               />
