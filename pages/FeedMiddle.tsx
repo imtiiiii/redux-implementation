@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+"use strict";
 import { useState } from "react";
 import {
   Input,
@@ -9,18 +10,40 @@ import {
   Upload,
   message,
   Checkbox,
+  Form,
 } from "antd";
 import Link from "next/link";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-import { selectProfile } from "../app/store/slices/profile";
+import { useDispatch, useSelector } from "react-redux";
+import { selectProfile, setProfileData } from "../app/store/slices/profile";
 const FeedMiddle = () => {
-  const data = useSelector(selectProfile);
-  console.log("data example initial", data);
+  const dispatch = useDispatch();
+  let init = useSelector(selectProfile);
+  init = JSON.parse(JSON.stringify(init));
+  const [data, setData] = useState();
+  useEffect(() => {
+    setData(init.name);
+    console.log("im called");
+   },[init])
+  console.log(data)
 
-  const likePressed = () => { 
+  const handleComment = (values:any) => {
+    const saveComments = {
+      content: values.comments,
+      owner_id: 2,
+      post_id:10
+    };
+    let temp = data?.comments;
+    temp.push(saveComments);
+    console.log("temp is",temp)
+    
+   
+    dispatch(setProfileData({name:temp})) 
+  };
+
+  const likePressed = () => {
     console.log("like called");
-  }
+  };
 
   function destroyAll() {
     Modal.destroyAll();
@@ -35,42 +58,7 @@ const FeedMiddle = () => {
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     name: "file",
   };
-  {
-    /* for fileupload */
-  }
-  {
-    /* for modal */
-  }
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-  {
-    /* for modal */
-  }
-  {
-    /* for image modal */
-  }
-  const [isModalVisible1, setIsVisible1] = useState(false);
-  const showModal1 = () => {
-    setIsVisible1(true);
-  };
-  const handleOk1 = () => {
-    setIsVisible1(false);
-  };
-  const handleCancel1 = () => {
-    console.log("called");
-    setIsVisible1(false);
-  };
-  {
-    /* for image modal */
-  }
+
   {
     /* Textarea */
   }
@@ -78,16 +66,7 @@ const FeedMiddle = () => {
   {
     /* Textarea */
   }
-  const onChange = (e) => {
-    console.log("Change:", e.target.value);
-  };
-  const onChange2 = (e) => {
-    console.log("Change:", e.target.value);
-  };
- 
 
-
-  
 
   return (
     <>
@@ -132,15 +111,7 @@ const FeedMiddle = () => {
                         #photoshop_Feedback
                       </Button>
                     </div>
-                    <p className="_feed_post_description">
-                      {data.name.content}
-                    </p>
-
-                    <div className="_card_file_post_area">
-                      <ul className="_card_file_post_area_ul  d-flex">
-                        <li className="_card_file_post_area_li"></li>
-                      </ul>
-                    </div>
+                    {/* <p className="_feed_post_description">{data.content}</p> */}
 
                     <div className="_feed_inner_timeline_reaction">
                       <ul className="_feed_inner_timeline_reaction_list">
@@ -159,8 +130,8 @@ const FeedMiddle = () => {
                                   viewBox="0 0 24 24"
                                   fill="none"
                                   stroke="#586ED1"
-                                  strokewidth="{2}"
-                                  strokelinecap="round"
+                                  strokeWidth="{2}"
+                                  strokeLinecap="round"
                                   strokeLinejoin="round"
                                 >
                                   <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" />
@@ -190,7 +161,7 @@ const FeedMiddle = () => {
                                   </div>
                                 </div>
                                 <p className="_feed_inner_timeline_reaction_para">
-                                  <span>{data.name.like_count}</span> Like
+                                  {/* <span>{data.like_count}</span> Like */}
                                 </p>
                               </div>
                             </span>
@@ -306,9 +277,9 @@ const FeedMiddle = () => {
                         </li>
                       </ul>
                     </div>
-                    <div className="_feed_inner_timeline_comment_area">
-                      <div className="_feed_inner_comment_box">
-                        <form className="_feed_inner_comment_box_form">
+                    <Form onFinish={handleComment}>
+                      <div className="_feed_inner_timeline_comment_area">
+                        <div className="_feed_inner_comment_box">
                           <div className="_feed_inner_comment_box_content">
                             <div className="_feed_inner_comment_box_content_image">
                               <Image
@@ -318,61 +289,23 @@ const FeedMiddle = () => {
                                 alt="pic"
                               />
                             </div>
+
                             <div className="_feed_inner_comment_box_content_txt">
-                              <TextArea
-                                className="_comment_textarea"
-                                rows={2}
-                                placeholder="comment"
-                                onChange={onChange2}
-                                autoSize={{ minRows: 1, maxRows: 10 }}
-                              />
+                              <Form.Item name="comments">
+                                <TextArea
+                                  className="_comment_textarea"
+                                  rows={2}
+                                  placeholder="comment"
+                                  autoSize={{ minRows: 1, maxRows: 10 }}
+                                />
+                              </Form.Item>
+                              <Button htmlType="submit">Submit</Button>
+                              {/* {data.comments.map((el,index) => <h6 key={index}>{ el.content}</h6>)} */}
                             </div>
                           </div>
-                          <div className="_feed_inner_comment_box_icon">
-                            <button
-                              type="submit"
-                              className="_feed_inner_comment_box_icon_btn"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width={16}
-                                height={16}
-                                fill="none"
-                                viewBox="0 0 16 16"
-                              >
-                                <path
-                                  fill="#000"
-                                  fillOpacity=".46"
-                                  fillRule="evenodd"
-                                  d="M13.167 6.534a.5.5 0 01.5.5c0 3.061-2.35 5.582-5.333 5.837V14.5a.5.5 0 01-1 0v-1.629C4.35 12.616 2 10.096 2 7.034a.5.5 0 011 0c0 2.679 2.168 4.859 4.833 4.859 2.666 0 4.834-2.18 4.834-4.86a.5.5 0 01.5-.5zM7.833.667a3.218 3.218 0 013.208 3.22v3.126c0 1.775-1.439 3.22-3.208 3.22a3.218 3.218 0 01-3.208-3.22V3.887c0-1.776 1.44-3.22 3.208-3.22zm0 1a2.217 2.217 0 00-2.208 2.22v3.126c0 1.223.991 2.22 2.208 2.22a2.217 2.217 0 002.208-2.22V3.887c0-1.224-.99-2.22-2.208-2.22z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </button>
-                            <button
-                              type="submit"
-                              className="_feed_inner_comment_box_icon_btn"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width={16}
-                                height={16}
-                                fill="none"
-                                viewBox="0 0 16 16"
-                              >
-                                <path
-                                  fill="#000"
-                                  fillOpacity=".46"
-                                  fillRule="evenodd"
-                                  d="M10.867 1.333c2.257 0 3.774 1.581 3.774 3.933v5.435c0 2.352-1.517 3.932-3.774 3.932H5.101c-2.254 0-3.767-1.58-3.767-3.932V5.266c0-2.352 1.513-3.933 3.767-3.933h5.766zm0 1H5.101c-1.681 0-2.767 1.152-2.767 2.933v5.435c0 1.782 1.086 2.932 2.767 2.932h5.766c1.685 0 2.774-1.15 2.774-2.932V5.266c0-1.781-1.089-2.933-2.774-2.933zm.426 5.733l.017.015.013.013.009.008.037.037c.12.12.453.46 1.443 1.477a.5.5 0 11-.716.697S10.73 8.91 10.633 8.816a.614.614 0 00-.433-.118.622.622 0 00-.421.225c-1.55 1.88-1.568 1.897-1.594 1.922a1.456 1.456 0 01-2.057-.021s-.62-.63-.63-.642c-.155-.143-.43-.134-.594.04l-1.02 1.076a.498.498 0 01-.707.018.499.499 0 01-.018-.706l1.018-1.075c.54-.573 1.45-.6 2.025-.06l.639.647c.178.18.467.184.646.008l1.519-1.843a1.618 1.618 0 011.098-.584c.433-.038.854.088 1.19.363zM5.706 4.42c.921 0 1.67.75 1.67 1.67 0 .92-.75 1.67-1.67 1.67-.92 0-1.67-.75-1.67-1.67 0-.921.75-1.67 1.67-1.67zm0 1a.67.67 0 10.001 1.34.67.67 0 00-.002-1.34z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                        </form>
+                        </div>
                       </div>
-                    </div>
+                    </Form>
                   </div>
                 </div>
               </div>

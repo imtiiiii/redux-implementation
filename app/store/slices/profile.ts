@@ -2,11 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { AppState, AppThunk } from "..";
 import data from '../../../data.json';
+const info=JSON.parse(JSON.stringify(data))
 export const ProfileSlice = createSlice({
   name: "profile",
 
   initialState: {
-    name: data,
+    name: info,
   },
 
   reducers: {

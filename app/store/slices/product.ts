@@ -17,7 +17,7 @@ export const ProductSlice = createSlice({
 
   extraReducers: {
     [HYDRATE]: (state, action) => {
-      console.log("HYDRATE", action.payload);
+     
 
       if (!action.payload.product.name) {
         return state;
