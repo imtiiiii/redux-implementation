@@ -17,9 +17,8 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProfile, setProfileData } from "../app/store/slices/profile";
 
-
 const FeedMiddle = () => {
-  const [Form1] = Form.useForm()
+  const [Form1] = Form.useForm();
   const [Form2] = Form.useForm();
   const dispatch = useDispatch();
   let init = useSelector(selectProfile);
@@ -28,11 +27,14 @@ const FeedMiddle = () => {
   let [data, setData] = useState(init.name);
   const [parentIndex, setParentIndex] = useState(-1);
   const replyComment = (ind: any) => {
+    console.log("ind is ", ind);
     setParentIndex(ind);
   };
   const handleReplyComment = (values: any) => {
     data = JSON.parse(JSON.stringify(data));
-    const reply = values.reply;
+
+    const reply = values[parentIndex];
+    if (!reply) return;
 
     let temp = data.comments[parentIndex];
 
@@ -41,10 +43,11 @@ const FeedMiddle = () => {
     data.comments[parentIndex] = temp;
     dispatch(setProfileData(data));
     setData(data);
-    Form2.setFieldValue("reply", "");
+    Form2.setFieldValue(values.parentIndex, "");
   };
 
   const handleComment = (values: any) => {
+    if (!values.comments) return;
     data = JSON.parse(JSON.stringify(data));
     const saveComments = {
       content: values.comments,
@@ -344,11 +347,11 @@ const FeedMiddle = () => {
                                 style={{ padding: "0 40px" }}
                                 className="_feed_inner_comment_box_content_txt"
                               >
-                                <Form.Item name="reply">
+                                <Form.Item name={index1}>
                                   <TextArea
                                     className="_comment_textarea"
                                     rows={2}
-                                    placeholder="reply"
+                                    placeholder="reply...."
                                     autoSize={{ minRows: 1, maxRows: 10 }}
                                   />
                                 </Form.Item>
