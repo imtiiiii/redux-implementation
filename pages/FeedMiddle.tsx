@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-"use strict";
+("use strict");
 import { useState } from "react";
 import {
   Input,
@@ -19,28 +19,26 @@ import { selectProfile, setProfileData } from "../app/store/slices/profile";
 const FeedMiddle = () => {
   const dispatch = useDispatch();
   let init = useSelector(selectProfile);
-  console.log("init is",init)
+  console.log("init is", init);
   init = JSON.parse(JSON.stringify(init));
   const [data, setData] = useState(init.name);
-  
 
   const handleComment = (values: any) => {
-    console.log("data is ",data);
+    console.log("data is ", data);
     const saveComments = {
       content: values.comments,
       owner_id: 2,
-      post_id:10
+      post_id: 10,
+      reply: [],
     };
     let temp = data?.comments;
-    console.log("temp is",temp)
+    console.log("temp is", temp);
     temp.push(saveComments);
-    data.comments = temp; 
-    
-   
-   
-    dispatch(setProfileData(data)) 
-     init = JSON.parse(JSON.stringify(init));
-   setData(init.name)
+    data.comments = temp;
+
+    dispatch(setProfileData(data));
+    init = JSON.parse(JSON.stringify(init));
+    setData(init.name);
   };
 
   const likePressed = () => {
@@ -68,7 +66,6 @@ const FeedMiddle = () => {
   {
     /* Textarea */
   }
-
 
   return (
     <>
@@ -301,12 +298,28 @@ const FeedMiddle = () => {
                                   autoSize={{ minRows: 1, maxRows: 10 }}
                                 />
                               </Form.Item>
-                              <Button htmlType="submit">Submit</Button>
-                              {data.comments.map((el:any,index:any) => <h6 key={index}>{ el.content}</h6>)}
+                              <Button type="primary" htmlType="submit">
+                                Submit
+                              </Button>
                             </div>
                           </div>
                         </div>
                       </div>
+                      {data.comments.map((el: any, index: any) => {
+                        return (
+                          <div key={index}>
+                            <h6>{el.content}</h6>
+                            {el.reply.map((rep: any, index: any) => {
+                              return (
+                                <div key={index}>
+                                  <h1>{rep.content}</h1>
+                                </div>
+                              );
+                            })}
+                            <Input/>
+                          </div>
+                        );
+                      })}
                     </Form>
                   </div>
                 </div>
