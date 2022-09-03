@@ -16,10 +16,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { selectProfile, setProfileData } from "../app/store/slices/profile";
+
+
 const FeedMiddle = () => {
+  const [Form1] = Form.useForm()
+  const [Form2] = Form.useForm();
   const dispatch = useDispatch();
   let init = useSelector(selectProfile);
   init = JSON.parse(JSON.stringify(init));
+  console.log("init", init);
   let [data, setData] = useState(init.name);
   const [parentIndex, setParentIndex] = useState(-1);
   const replyComment = (ind: any) => {
@@ -28,16 +33,15 @@ const FeedMiddle = () => {
   const handleReplyComment = (values: any) => {
     data = JSON.parse(JSON.stringify(data));
     const reply = values.reply;
-   
+
     let temp = data.comments[parentIndex];
-   
+
     temp.reply.push({ content: reply });
-   
+
     data.comments[parentIndex] = temp;
     dispatch(setProfileData(data));
     setData(data);
-
-   
+    Form2.setFieldValue("reply", "");
   };
 
   const handleComment = (values: any) => {
@@ -55,8 +59,7 @@ const FeedMiddle = () => {
 
     dispatch(setProfileData(data));
     setData(data);
-
-   
+    Form1.setFieldValue("comments", "");
   };
 
   const likePressed = () => {
@@ -287,7 +290,7 @@ const FeedMiddle = () => {
                         </li>
                       </ul>
                     </div>
-                    <Form onFinish={handleComment}>
+                    <Form form={Form1} onFinish={handleComment}>
                       <div
                         style={{ padding: "20px 0px" }}
                         className="_feed_inner_timeline_comment_area"
@@ -336,7 +339,7 @@ const FeedMiddle = () => {
                                 </div>
                               );
                             })}
-                            <Form onFinish={handleReplyComment}>
+                            <Form onFinish={handleReplyComment} form={Form2}>
                               <div
                                 style={{ padding: "0 40px" }}
                                 className="_feed_inner_comment_box_content_txt"
