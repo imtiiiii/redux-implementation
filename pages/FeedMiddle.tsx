@@ -19,26 +19,35 @@ import { selectProfile, setProfileData } from "../app/store/slices/profile";
 const FeedMiddle = () => {
   const dispatch = useDispatch();
   let init = useSelector(selectProfile);
-  console.log("init is", init);
+
   init = JSON.parse(JSON.stringify(init));
-  const [data, setData] = useState(init.name);
+  let [data, setData] = useState(init.name);
+  const replyComment = (ind: any) => {
+    console.log("im called reply comment", ind);
+  };
+  const handleReplyComment = (values: any) => {
+    console.log("values are", values);
+  };
 
   const handleComment = (values: any) => {
-    console.log("data is ", data);
+    data = JSON.parse(JSON.stringify(data));
     const saveComments = {
       content: values.comments,
       owner_id: 2,
-      post_id: 10,
+      post_id: 1,
       reply: [],
     };
+
     let temp = data?.comments;
-    console.log("temp is", temp);
     temp.push(saveComments);
     data.comments = temp;
+    const clone={...data}
+    dispatch(setProfileData(clone));
+    setData(clone);
+    
+   
 
-    dispatch(setProfileData(data));
-    init = JSON.parse(JSON.stringify(init));
-    setData(init.name);
+    console.log("data is ", data);
   };
 
   const likePressed = () => {
@@ -58,14 +67,7 @@ const FeedMiddle = () => {
     action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
     name: "file",
   };
-
-  {
-    /* Textarea */
-  }
   const { TextArea } = Input;
-  {
-    /* Textarea */
-  }
 
   return (
     <>
@@ -277,7 +279,10 @@ const FeedMiddle = () => {
                       </ul>
                     </div>
                     <Form onFinish={handleComment}>
-                      <div className="_feed_inner_timeline_comment_area">
+                      <div
+                        style={{ padding: "20px 0px" }}
+                        className="_feed_inner_timeline_comment_area"
+                      >
                         <div className="_feed_inner_comment_box">
                           <div className="_feed_inner_comment_box_content">
                             <div className="_feed_inner_comment_box_content_image">
@@ -298,29 +303,56 @@ const FeedMiddle = () => {
                                   autoSize={{ minRows: 1, maxRows: 10 }}
                                 />
                               </Form.Item>
-                              <Button type="primary" htmlType="submit">
+                              <Button
+                                style={{ padding: "10px 0px" }}
+                                type="primary"
+                                htmlType="submit"
+                              >
                                 Submit
                               </Button>
                             </div>
                           </div>
                         </div>
                       </div>
-                      {data.comments.map((el: any, index: any) => {
+                    </Form>
+                    <div>
+                      {data.comments.map((el: any, index1: any) => {
                         return (
-                          <div key={index}>
+                          <div key={index1}>
                             <h6>{el.content}</h6>
-                            {el.reply.map((rep: any, index: any) => {
+                            {el.reply.map((rep: any, index2: any) => {
                               return (
-                                <div key={index}>
-                                  <h1>{rep.content}</h1>
+                                <div style={{ padding: "0 40px" }} key={index2}>
+                                  <p>{rep.content}</p>
                                 </div>
                               );
                             })}
-                            <Input/>
+                            <Form onFinish={handleReplyComment}>
+                              <div
+                                style={{ padding: "0 40px" }}
+                                className="_feed_inner_comment_box_content_txt"
+                              >
+                                <Form.Item name="reply">
+                                  <TextArea
+                                    className="_comment_textarea"
+                                    rows={2}
+                                    placeholder="reply"
+                                    autoSize={{ minRows: 1, maxRows: 10 }}
+                                  />
+                                </Form.Item>
+                                <Button
+                                  onClick={() => replyComment(index1)}
+                                  type="primary"
+                                  htmlType="submit"
+                                >
+                                  send reply
+                                </Button>
+                              </div>
+                            </Form>
                           </div>
                         );
                       })}
-                    </Form>
+                    </div>
                   </div>
                 </div>
               </div>
