@@ -119,13 +119,10 @@ const FeedMiddle = () => {
                             <p className="_feed_inner_timeline_post_box_para">
                               5 minute ago .
                             </p>
-                           
                           </div>
                         </div>
                       </div>
-                      <div className="_feed_inner_timeline_post_box_dropdown">
-                        
-                      </div>
+                      <div className="_feed_inner_timeline_post_box_dropdown"></div>
                     </div>
                     <h4 className="_feed_inner_timeline_post_title">
                       - Photoshop Feedback
@@ -136,21 +133,22 @@ const FeedMiddle = () => {
                       </Button>
                     </div>
                     <p className="_feed_post_description">
-                      { data.name.content}
+                      {data.name.content}
                     </p>
 
                     <div className="_card_file_post_area">
                       <ul className="_card_file_post_area_ul  d-flex">
-                        <li className="_card_file_post_area_li">
-                    
-                        </li>
+                        <li className="_card_file_post_area_li"></li>
                       </ul>
                     </div>
 
                     <div className="_feed_inner_timeline_reaction">
                       <ul className="_feed_inner_timeline_reaction_list">
                         <li className="_feed_inner_timeline_reaction_item">
-                          <button className="_feed_inner_timeline_reaction_link">
+                          <button
+                            onClick={likePressed}
+                            className="_feed_inner_timeline_reaction_link"
+                          >
                             <span className="_like_btn _like_btn-post unselectable">
                               <div className="_status_reaction _active_like">
                                 <svg
@@ -191,8 +189,8 @@ const FeedMiddle = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <p onClick={likePressed} className="_feed_inner_timeline_reaction_para">
-                                  <span>{ data.name.like_count}</span> Like
+                                <p className="_feed_inner_timeline_reaction_para">
+                                  <span>{data.name.like_count}</span> Like
                                 </p>
                               </div>
                             </span>
