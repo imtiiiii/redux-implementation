@@ -19,26 +19,28 @@ import { selectProfile, setProfileData } from "../app/store/slices/profile";
 const FeedMiddle = () => {
   const dispatch = useDispatch();
   let init = useSelector(selectProfile);
+  console.log("init is",init)
   init = JSON.parse(JSON.stringify(init));
-  const [data, setData] = useState();
-  useEffect(() => {
-    setData(init.name);
-    console.log("im called");
-   },[init])
-  console.log(data)
+  const [data, setData] = useState(init.name);
+  
 
-  const handleComment = (values:any) => {
+  const handleComment = (values: any) => {
+    console.log("data is ",data);
     const saveComments = {
       content: values.comments,
       owner_id: 2,
       post_id:10
     };
     let temp = data?.comments;
-    temp.push(saveComments);
     console.log("temp is",temp)
+    temp.push(saveComments);
+    data.comments = temp; 
     
    
-    dispatch(setProfileData({name:temp})) 
+   
+    dispatch(setProfileData(data)) 
+     init = JSON.parse(JSON.stringify(init));
+   setData(init.name)
   };
 
   const likePressed = () => {
@@ -111,7 +113,7 @@ const FeedMiddle = () => {
                         #photoshop_Feedback
                       </Button>
                     </div>
-                    {/* <p className="_feed_post_description">{data.content}</p> */}
+                    <p className="_feed_post_description">{data.content}</p>
 
                     <div className="_feed_inner_timeline_reaction">
                       <ul className="_feed_inner_timeline_reaction_list">
@@ -161,7 +163,7 @@ const FeedMiddle = () => {
                                   </div>
                                 </div>
                                 <p className="_feed_inner_timeline_reaction_para">
-                                  {/* <span>{data.like_count}</span> Like */}
+                                  <span>{data.like_count}</span> Like
                                 </p>
                               </div>
                             </span>
@@ -300,7 +302,7 @@ const FeedMiddle = () => {
                                 />
                               </Form.Item>
                               <Button htmlType="submit">Submit</Button>
-                              {/* {data.comments.map((el,index) => <h6 key={index}>{ el.content}</h6>)} */}
+                              {data.comments.map((el:any,index:any) => <h6 key={index}>{ el.content}</h6>)}
                             </div>
                           </div>
                         </div>
