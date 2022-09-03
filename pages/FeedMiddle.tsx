@@ -19,14 +19,25 @@ import { selectProfile, setProfileData } from "../app/store/slices/profile";
 const FeedMiddle = () => {
   const dispatch = useDispatch();
   let init = useSelector(selectProfile);
-
   init = JSON.parse(JSON.stringify(init));
   let [data, setData] = useState(init.name);
+  const [parentIndex, setParentIndex] = useState(-1);
   const replyComment = (ind: any) => {
-    console.log("im called reply comment", ind);
+    setParentIndex(ind);
   };
   const handleReplyComment = (values: any) => {
-    console.log("values are", values);
+    data = JSON.parse(JSON.stringify(data));
+    const reply = values.reply;
+   
+    let temp = data.comments[parentIndex];
+   
+    temp.reply.push({ content: reply });
+   
+    data.comments[parentIndex] = temp;
+    dispatch(setProfileData(data));
+    setData(data);
+
+   
   };
 
   const handleComment = (values: any) => {
@@ -41,13 +52,11 @@ const FeedMiddle = () => {
     let temp = data?.comments;
     temp.push(saveComments);
     data.comments = temp;
-    const clone={...data}
-    dispatch(setProfileData(clone));
-    setData(clone);
-    
-   
 
-    console.log("data is ", data);
+    dispatch(setProfileData(data));
+    setData(data);
+
+   
   };
 
   const likePressed = () => {
