@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { selectProfile } from "../app/store/slices/profile";
+import { useDispatch, useSelector } from "react-redux";
+import { selectProfile, setProfileData } from "../app/store/slices/profile";
 import { Menu, Dropdown, Button, Tabs, Input } from "antd";
 import { wrapper } from "../app/store";
 import Feed from "./Feed";
  const { TabPane } = Tabs;
 const Example = (props: any) => {
-  const data = useSelector(selectProfile);
-  console.log("data example", data);
+ 
+  const dispatch=useDispatch()
+  // useEffect(() => { 
+  //   dispatch(setProfileData({
+  //     id:2
+  //   }))
+  // },[])
   function callback(key:any) {
     console.log(key);
   }

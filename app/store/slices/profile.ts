@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 import { AppState, AppThunk } from "..";
-
+import data from '../../../data.json';
 export const ProfileSlice = createSlice({
   name: "profile",
 
   initialState: {
-    name: null,
+    name: data,
   },
 
   reducers: {
@@ -18,7 +18,7 @@ export const ProfileSlice = createSlice({
   extraReducers: {
     [HYDRATE]: (state, action) => {
           if (action.payload.profile.name === null) {
-          console.log("im here",state.name)
+         
         return state
       }
 

@@ -12,7 +12,11 @@ import {
 } from "antd";
 import Link from "next/link";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { selectProfile } from "../app/store/slices/profile";
 const FeedMiddle = () => {
+  const data = useSelector(selectProfile);
+  console.log("data example initial", data);
   function destroyAll() {
     Modal.destroyAll();
   }
@@ -383,16 +387,15 @@ const FeedMiddle = () => {
                     className="_feed_img"
                   />
                 </div>
-               
+
                 <div className="_feed_inner_timeline_post_area  _feed_middle_inner">
                   <div className="_feed_inner_timeline_content">
                     <div className="_feed_inner_timeline_post_top">
                       <div className="_feed_inner_timeline_post_box">
-                       
                         <div className="_feed_inner_timeline_post_box_txt">
                           <a href="/profile">
                             <h4 className="_feed_inner_timeline_post_box_title">
-                              Martin Vaccaro
+                              Martin Vaccaro 2
                             </h4>
                           </a>
                           <div className="_feed_inner_timline_area">
@@ -463,35 +466,13 @@ const FeedMiddle = () => {
                       </Button>
                     </div>
                     <p className="_feed_post_description">
-                      Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                      sed diam nonumy eirmod tempor invidunt ut labore et dolore
-                      magna aliquyam erat, sed diam voluptua.
+                      { data.name.content}
                     </p>
 
                     <div className="_card_file_post_area">
                       <ul className="_card_file_post_area_ul  d-flex">
                         <li className="_card_file_post_area_li">
-                          <div className="_card_file_post d-flex">
-                            <p className="_card_file_post_icon">
-                              <img
-                                src="../../img/file.svg"
-                                className="_card_file_post_icon_img"
-                              />
-                            </p>
-                            <a
-                              href="https://ewr1.vultrobjects.com/filestore/cl1anr1f0005fv7h2bf527nak.xlsx"
-                              className="_card_file_post_lnk"
-                            >
-                              <div className="_card_file_post_dtls">
-                                <p className="_card_file_post_dtls_p">
-                                  aa.xlsx
-                                </p>
-                                <p className="_card_file_post_dtls_size">
-                                  8 kb
-                                </p>
-                              </div>
-                            </a>
-                          </div>
+                    
                         </li>
                       </ul>
                     </div>
@@ -667,7 +648,7 @@ const FeedMiddle = () => {
                                 src="/../../img/comment_img.png"
                                 className="_comment_img"
                                 alt="pic"
-                              /> 
+                              />
                             </div>
                             <div className="_feed_inner_comment_box_content_txt">
                               <TextArea

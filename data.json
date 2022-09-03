@@ -1,0 +1,12 @@
+{
+    "id":1,
+    "content":"my post 1",
+    "like_count":22,
+    "comments":[
+        {
+            "post_id":1,
+            "content":"comment 1",
+            "owner_id":2
+        }
+    ]
+}
